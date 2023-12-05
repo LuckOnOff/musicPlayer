@@ -6,12 +6,15 @@
   box-sizing: border-box;
 }
 
+body {
+  overflow-y: hidden;
+}
+
 .wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  overflow: hidden;
   background: rgb(157, 110, 203);
 }
 
