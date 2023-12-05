@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="img/page-icons.svg" type="image/x-icon">
+    <title>Музыкальный плеер</title>
+</head>
+<body>
+    <wrapper class="wrapper">
+        <div class="bg-animation">
+            <span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <section class="music-player">
+            <header class="header">
+                <img src="img/img-music-3.jpg" data-imgIndex="index = 1" class="img-music img-music-one" width="280px" height="220px" alt="Каэр-Морхэн">
+                <img src="img/img-music-1.jfif" data-imgIndex="index = 2" class="img-music img-music-two" width="280px" height="220px" alt="Знак школы Волка" loading="lazy">
+                <img src="img/img-music-2.jpeg" data-imgIndex="index = 3" class="img-music img-music-tree" width="280px" height="220px" alt="Геральт" loading="lazy">
+                <img src="img/img-music-4.jpg" data-imgIndex="index = 4" class="img-music img-music-four" width="280px" height="220px" alt="Гераль и Трисс" loading="lazy">
+
+                <div class="music-names">
+                    <span data-imgIndex="index = 1">
+                        Marcin Przybylowicz & Percival Schuttenbach — Kaer Morhen
+                    </span>
+
+                    <span data-imgIndex="index = 2">
+                        Percival — Hunt Or Be Hunted
+                    </span>
+
+                    <span data-imgIndex="index = 3">
+                        Marcin Przyby owicz Percival — Destiny Of Wild Hunt
+                    </span>
+
+                    <span data-imgIndex="index = 4">
+                        Percival & Marcin Przybyłowicz & Mikolai Stroinski — Silver For Monsters
+                    </span>
+                </div>
+
+                <div class="playlist">
+                    <audio data-imgIndex="index = 1">
+                        <source src="music/Marcin Przybylowicz & Percival Schuttenbach — Kaer_Morhen.mp3" type="audio/mpeg">
+                    </audio>
+
+                    <audio data-imgIndex="index = 2">
+                        <source src="music/Percival — Hunt Or Be Hunted.mp3" type="audio/mpeg">
+                    </audio>
+
+                    <audio data-imgIndex="index = 3">
+                        <source src="music/Marcin_Przyby_owicz_Percival — Destiny_Of_Wild_Hunt.mp3" type="audio/mpeg">
+                    </audio>
+
+                    <audio data-imgIndex="index = 4">
+                        <source src="music/Percival & Marcin Przybyłowicz & Mikolai Stroinski — Silver For Monsters.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </header>
+                
+                <main class="main">
+                    <div class="overflow-hidden-conteiner">
+                        <span class="song-name"></span>
+                    </div>
+                    <div class="progress-bar-and-volume">
+                        <input type="range" class="progress-bar" value="0">
+                        <div class="sound-button">
+                            <img src="img/wondicon-button.svg" width="30px" height="30px" class="sound-button-img" alt="Громкость" title="Регулировка громкости">
+                            <div class="input-volume-conteiner">
+                                <input type="range" class="volume-range" value="0.5" step="0.1" min="0" max="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="time-display">
+                        <span class="current-time">00:00</span>
+                        <span class="duraction"></span>
+                    </div>
+                </main>
+                <footer class="footer">
+                    <section class="buttons">
+                        <div class="repeat-button-conteiner">
+                            <button class="repeat-button">
+                                <img src="img/music-repeat-button.svg" width="40px" height="35px" class="repeat-button-img" alt="Повторить песню" title="Повторять песню">
+                                <img src="img/music-repeat-button.svg" width="40px" height="35px" class="repeat-button-img-active" alt="Не повторять песню" title="Выключить повторение песни">
+                            </button>
+                        </div>
+    
+                        <div class="previous-button-conteiner">
+                            <button class="previous-button">
+                                <img src="img/previous_song_button.svg" width="50px" height="50px" alt="Прошлая песня" title="Включить прошлую песню">
+                            </button>
+                        </div>
+
+                        <div class="empty-conteiner"></div>
+
+                        <div class="play-pause-conteiner">
+                            <div class="play-button-conteiner">
+                                <button class="play-button">
+                                    <img src="img/play_button.svg" width="50px" height="50px" alt="Играть" title="Включить проигрывание песни">
+                                </button>
+                            </div>
+        
+                            <div class="pause-button-conteiner">
+                                <button class="pause-button">
+                                    <img src="img/music-pause.svg" width="50px" height="50px" alt="Остановить" title="Выключить проигрывание песни">
+                                </button>
+                            </div>    
+                        </div>
+    
+                        <div class="next-button-conteiner">
+                            <button class="next-button">
+                                <img src="img/next_song_button.svg" width="50px" height="50px" alt="Следующая песня" title="Включить следующую песню">
+                            </button>
+                        </div>
+    
+                        <div class="random-button-conteiner">
+                            <button class="random-button">
+                                <img src="img/random_music.svg" width="40px" height="30px" class="random-button-img" alt="Случайная песня" title="Перемешать и включить">
+                            </button>
+                        </div>
+                    </section>
+                </footer>
+        </section>
+    </wrapper>
+<script src="main.js"></script>
+</body>
+</html>
