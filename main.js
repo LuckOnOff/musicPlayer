@@ -222,7 +222,7 @@ function addTimeUpdateHandler() {
     currentSong.addEventListener('timeupdate', () => {
 
         progressBar.value = currentSong.currentTime;
-        currentTime.innerHTML = formatTime(currentSong.currentTime);
+        currentTime.textContent = formatTime(currentSong.currentTime);
 
     });
     
@@ -294,13 +294,13 @@ function duractionSpan() {
 
     const durationTime = document.querySelector('.duraction');
 
-    durationTime.innerHTML = formatTime(currentSong.duration);
+    durationTime.textContent = formatTime(currentSong.duration);
 
 };
 
 function currentTimeSpan() {
 
-    currentTime.innerHTML = formatTime(currentSong.currentTime);
+    currentTime.textContent = formatTime(currentSong.currentTime);
 
 };
 
