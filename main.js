@@ -1,57 +1,145 @@
 'use strict';
-const audioPlayer = document.querySelectorAll('.playlist audio');
+const audioPlayer = Array.from(document.querySelectorAll('.playlist audio'));
 const currentImg = document.querySelectorAll('.img-music');
 const musicNames = document.querySelectorAll('.music-names span');
 const backgroundAniSpan = document.querySelectorAll('.bg-animation');
 const progressBar = document.querySelector('.progress-bar');
 const currentTime = document.querySelector('.current-time');
 const songName = document.querySelector('.song-name');
-const repeatButtonImgNormal = document.querySelector('.repeat-button-img');
-const repeatButtonActive = document.querySelector('.repeat-button-img-active');
-const previousButton = document.querySelector('.previous-button-conteiner');
-const playPauseConteiner = document.querySelector('.play-pause-conteiner');
-const nextButton = document.querySelector('.next-button-conteiner');
-const randomButton = document.querySelector('.random-button-conteiner');
 const volumeButton = document.querySelector('.volume-range');
 const soundButton = document.querySelector('.sound-button');
 const soundButtonImg = document.querySelector('.sound-button-img');
 const inputVolumeConteiner = document.querySelector('.input-volume-conteiner');
 
-let audioPlayerArr = Array.from(audioPlayer);
 let buttonPlayFlag = false;
 let volumeFlag = false;
 let currentIndex = 0;
-let currentSong = audioPlayerArr[currentIndex];
+let currentSong = audioPlayer[currentIndex];
 
-playPauseConteiner.addEventListener('click', () => {
-    const playButton = document.querySelector('.play-button-conteiner');
-    const pauseButton = document.querySelector('.pause-button-conteiner');
-    if (buttonPlayFlag) {
+document.addEventListener('click', (e) => {
 
-        buttonPlayFlag = false;
+    let target = e.target;
+    let repeatButtonImgNormal = document.querySelector('.repeat-button-img');
+    let repeatButtonActive = document.querySelector('.repeat-button-img-active');
 
-        playButton.style.display = 'flex';
-        pauseButton.style.display = 'none';
-        songName.classList.remove('song-name-active');
-        backgroundAniSpan.forEach(item => {
-            item.classList.remove('span-animation');
-        });
+    if(target.closest('.play-pause-conteiner')) {
+
+        const playButton = document.querySelector('.play-button-conteiner');
+        const pauseButton = document.querySelector('.pause-button-conteiner');
+
+        if (buttonPlayFlag) {
+
+            buttonPlayFlag = false;
+
+            playButton.style.display = 'flex';
+            pauseButton.style.display = 'none';
+            songName.classList.remove('song-name-active');
+
+            backgroundAniSpan.forEach(item => {
+                item.classList.remove('span-animation');
+            });
+
+            currentSong.pause();
+        } else {
+
+            buttonPlayFlag = true;
+
+            playButton.style.display = 'none';
+            pauseButton.style.display = 'flex';
+            songName.classList.add('song-name-active');
+
+            backgroundAniSpan.forEach(item => {
+                item.classList.add('span-animation');
+            });
+
+            currentSong.play();
+        }
+
+    }
+    if(target.closest('.random-button-conteiner')) {
+
+        for (let i = audioPlayer.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [audioPlayer[i], audioPlayer[j]] = [audioPlayer[j], audioPlayer[i]];
+        }
+
+        currentSong.loop = false;
+
+        repeatButtonActive.style.display = 'none';
+        repeatButtonImgNormal.style.display = 'block';
+
+        playNextSong(audioPlayer);
+    }
+    if(target.closest('.repeat-button-img')) {
+
+        currentSong.loop = true;
+
+        repeatButtonActive.style.display = 'block';
+
+        repeatButtonImgNormal.style.display = 'none';
+    }
+    if(target.closest('.repeat-button-img-active')) {
+
+        currentSong.loop = false;
+
+        repeatButtonActive.style.display = 'none';
+        repeatButtonImgNormal.style.display = 'block';
+    }
+    if(target.closest('.previous-button-conteiner')) {
 
         currentSong.pause();
 
-    } else {
+        currentSong.currentTime = 0;
+        progressBar.value = 0;
 
-        buttonPlayFlag = true;
+    currentIndex--;
 
-        playButton.style.display = 'none';
-        pauseButton.style.display = 'flex';
-        songName.classList.add('song-name-active');
-        backgroundAniSpan.forEach(item => {
-            item.classList.add('span-animation');
-        });
+    if (currentIndex < 0) {
+
+        currentIndex = audioPlayer.length - 1;
+
+    }
+
+    currentSong = audioPlayer[currentIndex];
+
+    if (buttonPlayFlag) {
 
         currentSong.play();
 
+        songName.classList.remove('song-name-active');
+
+        setTimeout(() => {
+            songName.classList.add('song-name-active');
+        }, 0);
+
+    } else {
+
+        currentSong.pause();
+
+    }
+
+    duractionSpan();
+    currentTimeSpan();
+    addTimeUpdateHandler();
+    getImgAndNameMusic();
+
+    currentSong.addEventListener('ended', () => playNextSong(audioPlayer));
+    }
+    if(target.closest('.next-button-conteiner')) {
+        playNextSong(audioPlayer);
+    }
+    if(target.closest('.sound-button-img')) {
+        if(!volumeFlag) {
+            soundButtonImg.src = "img/sound-off.svg";
+            volumeButton.value = 0;
+            currentSong.volume = volumeButton.value;
+            volumeFlag = true;
+        } else {
+            soundButtonImg.src = "img/wondicon-button.svg";
+            volumeButton.value = 0.5;
+            currentSong.volume = volumeButton.value;
+            volumeFlag = false;
+        }
     }
 });
 
@@ -77,81 +165,6 @@ function getImgAndNameMusic() {
 
 }
 getImgAndNameMusic();
-
-randomButton.addEventListener('click', () => {
-
-    for (let i = audioPlayerArr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [audioPlayerArr[i], audioPlayerArr[j]] = [audioPlayerArr[j], audioPlayerArr[i]];
-    }
-
-    currentSong.loop = false;
-
-    repeatButtonActive.style.display = 'none';
-    repeatButtonImgNormal.style.display = 'block';
-
-    playNextSong(audioPlayerArr);
-
-});
-
-repeatButtonImgNormal.addEventListener('click', () => {
-
-    currentSong.loop = true;
-
-    repeatButtonActive.style.display = 'block';
-    repeatButtonImgNormal.style.display = 'none';
-
-});
-
-repeatButtonActive.addEventListener('click', () => {
-
-    currentSong.loop = false;
-
-    repeatButtonActive.style.display = 'none';
-    repeatButtonImgNormal.style.display = 'block';
-
-});
-
-previousButton.addEventListener('click', () => {
-    
-    currentSong.pause();
-
-    currentSong.currentTime = 0;
-    progressBar.value = 0;
-
-    currentIndex--;
-
-    if (currentIndex < 0) {
-
-        currentIndex = audioPlayerArr.length - 1;
-
-    }
-
-    currentSong = audioPlayerArr[currentIndex];
-
-    if (buttonPlayFlag) {
-
-        currentSong.play();
-
-        songName.classList.remove('song-name-active');
-
-        setTimeout(() => {
-            songName.classList.add('song-name-active');
-        }, 0);
-
-    } else {
-
-        currentSong.pause();
-
-    }
-
-    duractionSpan();
-    currentTimeSpan();
-    addTimeUpdateHandler();
-    getImgAndNameMusic();
-
-    currentSong.addEventListener('ended', () => playNextSong(audioPlayerArr));
-});
 
 function playNextSong(audioPlayer) {
 
@@ -205,12 +218,10 @@ function playNextSong(audioPlayer) {
 
 }
 
-nextButton.addEventListener('click', () => playNextSong(audioPlayerArr));
-
 function addEndedHandler() {
-    audioPlayerArr.forEach((audio) => {
+    audioPlayer.forEach((audio) => {
 
-        audio.addEventListener('ended', () => playNextSong(audioPlayerArr));
+        audio.addEventListener('ended', () => playNextSong(audioPlayer));
 
     });
 }
@@ -228,12 +239,12 @@ function addTimeUpdateHandler() {
     
 }
 
-soundButton.addEventListener('mouseover', () => {
+soundButton.addEventListener('pointerover', () => {
     inputVolumeConteiner.style.display = 'block';
     soundButtonImg.style.opacity = 1;
 });
 
-soundButton.addEventListener('mouseout', () => {
+soundButton.addEventListener('pointerout', () => {
     inputVolumeConteiner.style.display = 'none';
     soundButtonImg.style.opacity = 0.6;
 });
@@ -246,20 +257,6 @@ volumeButton.addEventListener('input', () => {
         soundButtonImg.src = "img/sound-off.svg";
     } else {
         soundButtonImg.src = "img/wondicon-button.svg";
-    }
-});
-
-soundButtonImg.addEventListener('click', () => {
-    if(!volumeFlag) {
-        soundButtonImg.src = "img/sound-off.svg";
-        volumeButton.value = 0;
-        currentSong.volume = volumeButton.value;
-        volumeFlag = true;
-    } else {
-        soundButtonImg.src = "img/wondicon-button.svg";
-        volumeButton.value = 0.5;
-        currentSong.volume = volumeButton.value;
-        volumeFlag = false;
     }
 });
 
